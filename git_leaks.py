@@ -1,8 +1,15 @@
 import pandas as pd, re, signal, sys, time, pdb
 from git import Repo
 
+END = "\033[m"
+RED = "\033[38;5;196m"
+GREEN = "\033[38;5;40m"
+YELLOW = "\033[38;5;226m"
+
+
 REPO_DIR = "1.1gitleaks/skale/skale-manager"
 leaks = ['key','password','credentials']
+
 
 def compilar_patrones(leaks):
     compiled_leaks = []
@@ -29,15 +36,28 @@ def transform(repo:Repo,compiled_leaks):
 def load(commit_list,message_list): 
     
     df_leaks = pd.DataFrame({'Commit':commit_list,'Message':message_list})
-    print(df_leaks)
     df_leaks.to_csv(r'1.1gitleaks/leaks.csv')
     
+
+def progress_bar(iz, de):
+    for i in range(iz, 1+de):
+        print("\033[1A\033[2K", end="")
+        x = i//2
+        if i < 67:
+            print('╠╣' + '█'*x + '░'*(100-x) +'╠╣ ' + str(i/2) + '% \ EXTRACT' + END)
+        elif i <124:
+            print('╠╣' + '█'*x + '░'*(100-x) +'╠╣ ' + str(i/2) + '% \ TRANSFORM' + END)
+        else:
+            print('╠╣' + '█'*x + '░'*(100-x) +'╠╣ ' + str(i/2) + '% \ LOAD' + END)
+        time.sleep(0.01)
 
 
 if __name__ == "__main__":
     
     compiled_leaks = compilar_patrones(leaks)
-
     repo = extract(REPO_DIR)
     commit_list,message_list = transform(repo,compiled_leaks)
+    progress_bar(1,66)
+    progress_bar(67,124)
     load(commit_list,message_list)
+    progress_bar(124,200)
