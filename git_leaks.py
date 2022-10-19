@@ -11,17 +11,24 @@ REPO_DIR = "1.1gitleaks/skale/skale-manager"
 leaks = ['key','password','credentials']
 
 
+def handler_signal(signal, frame):
+    print("\n\n[!] Out .......\n")
+    sys.exit(1)
+
+
 def compilar_patrones(leaks):
     compiled_leaks = []
     for leak in leaks:
         compiled_leaks.append(re.compile(leak))
     return compiled_leaks
 
+
 def extract(url):
     repo = Repo(url)
     return repo
 
-def transform(repo:Repo,compiled_leaks):
+
+def transform(repo:Repo, compiled_leaks):
     commit_list, message_list = [], []
     repo_list = list(repo.iter_commits())
     print(repo.iter_commits())
@@ -32,8 +39,9 @@ def transform(repo:Repo,compiled_leaks):
                 message_list.append(commit.message)
                 
     return commit_list,message_list
-    
-def load(commit_list,message_list): 
+
+
+def load(commit_list, message_list): 
     
     df_leaks = pd.DataFrame({'Commit':commit_list,'Message':message_list})
     df_leaks.to_csv(r'1.1gitleaks/leaks.csv')
@@ -53,11 +61,12 @@ def progress_bar(iz, de):
 
 
 if __name__ == "__main__":
-    
+
+    signal.signal(signal.SIGINT, handler_signal)
     compiled_leaks = compilar_patrones(leaks)
     repo = extract(REPO_DIR)
-    commit_list,message_list = transform(repo,compiled_leaks)
-    progress_bar(1,66)
-    progress_bar(67,124)
-    load(commit_list,message_list)
-    progress_bar(124,200)
+    commit_list,message_list = transform(repo, compiled_leaks)
+    progress_bar(1, 66)
+    progress_bar(67, 124)
+    load(commit_list, message_list)
+    progress_bar(124, 200)
