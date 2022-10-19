@@ -1,4 +1,5 @@
-import pandas as pd, re, signal, sys, time, pdb
+import pandas as pd
+import re, signal, sys, time
 from git import Repo
 
 END = "\033[m"

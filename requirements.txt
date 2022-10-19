@@ -1,2 +1,2 @@
-pandas
-GitPython
+pandas==1.4.1
+GitPython==3.1.27
