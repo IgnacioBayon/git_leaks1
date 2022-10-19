@@ -8,7 +8,7 @@ YELLOW = "\033[38;5;226m"
 
 
 REPO_DIR = "1.1gitleaks/skale/skale-manager"
-leaks = ['key','password','credentials']
+leaks = ['key', 'password', 'credentials']
 
 
 def handler_signal(signal, frame):
@@ -38,7 +38,7 @@ def transform(repo:Repo, compiled_leaks):
                 commit_list.append(commit.hexsha)
                 message_list.append(commit.message)
                 
-    return commit_list,message_list
+    return commit_list, message_list
 
 
 def load(commit_list, message_list): 
