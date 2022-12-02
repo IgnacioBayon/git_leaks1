@@ -4,7 +4,7 @@ from git import Repo
 
 END = "\033[m"
 
-REPO_DIR = "1.1gitleaks/skale/skale-manager"
+REPO_DIR = "skale/skale-manager"
 leaks = ['key', 'password', 'credentials']
 
 
