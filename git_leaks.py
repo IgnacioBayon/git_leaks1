@@ -41,7 +41,7 @@ def transform(repo:Repo, compiled_leaks):
 def load(commit_list, message_list): 
     
     df_leaks = pd.DataFrame({'Commit':commit_list,'Message':message_list})
-    df_leaks.to_csv(r'1.1gitleaks/leaks.csv')
+    df_leaks.to_csv(r'leaks.csv')
     
 
 def progress_bar(iz, de):
